@@ -469,7 +469,8 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
   // Only handle notifications from FCM.
   if (userInfo[@"gcm.message_id"]) {
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
-      __block BOOL completed = NO;
+        //Hide code for https://github.com/firebase/flutterfire/issues/12493
+      /*__block BOOL completed = NO;
 
       // If app is in background state, register background task to guarantee async queues aren't
       // frozen.
@@ -514,7 +515,9 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
                             }
                           }
                         }
-                      }];
+                      }];*/
+        [_channel invokeMethod:@"Messaging#onBackgroundMessage"
+                     arguments:notificationDict];
     } else {
       // If "alert" (i.e. notification) is present in userInfo, this will be called by the other
       // "Messaging#onMessage" channel handler
